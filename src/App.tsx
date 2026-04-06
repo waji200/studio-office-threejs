@@ -172,7 +172,10 @@ function App() {
 
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-left bg-[#5a90d8]">
+        <div className="hero-logo-bg" aria-hidden>
+          <CloudCircuitIcon />
+        </div>
+        <div className="hero-canvas-wrap bg-[#5a90d8]">
           <Canvas orthographic camera={{ position: [-20, 10, 20], zoom: 30 }} style={{ backgroundColor: '#5a90d8' }}>
             <ambientLight intensity={0.51} />
             <directionalLight
@@ -205,10 +208,38 @@ function App() {
           </Canvas>
           <Loader />
         </div>
-        <div className="hero-right">
-          <CloudCircuitIcon />
+      </section>
+
+      <section className="wire-section wire-logos" aria-label="Partner logos placeholder">
+        <span className="wire-tag">wireframe</span>
+        <h2 className="wire-heading">Logo showcase</h2>
+        <div className="wire-logo-row">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <div key={n} className="wire-box wire-logo-slot">
+              Logo {n}
+            </div>
+          ))}
         </div>
       </section>
+
+      <section className="wire-section wire-copy" aria-label="Content placeholder">
+        <span className="wire-tag">wireframe</span>
+        <h2 className="wire-heading">Text section</h2>
+        <div className="wire-text-blocks">
+          <div className="wire-line" />
+          <div className="wire-line" />
+          <div className="wire-line wire-line-short" />
+        </div>
+      </section>
+
+      <footer className="wire-footer">
+        <span className="wire-tag">wireframe</span>
+        <div className="wire-footer-inner">
+          <div className="wire-box wire-footer-brand">Brand / legal</div>
+          <div className="wire-box wire-footer-links">Links</div>
+          <div className="wire-box wire-footer-social">Social</div>
+        </div>
+      </footer>
     </div>
   );
 }

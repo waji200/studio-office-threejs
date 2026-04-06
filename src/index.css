@@ -123,32 +123,132 @@ body {
 
 /* Hero Section */
 .hero-section {
-  display: flex;
-  flex-direction: row;
-  padding: 0 40px;
-  gap: 40px;
+  position: relative;
+  isolation: isolate;
   margin-top: 20px;
   height: calc(100vh - 180px);
   min-height: 500px;
 }
 
-.hero-left {
-  flex: 5.5;
-  background: #fdfdfd;
-  position: relative;
-  overflow: hidden;
-  height: 100%;
+.hero-logo-bg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
 }
 
-.hero-right {
-  flex: 4.5;
+.hero-canvas-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Make Canvas Fill Parent */
+.hero-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Wireframe placeholders */
+.wire-section,
+.wire-footer {
+  margin: 0 40px 24px;
+  padding: 28px 24px;
+  border: 2px dashed #bdbdbd;
+  background: repeating-linear-gradient(
+    -45deg,
+    #fafafa,
+    #fafafa 8px,
+    #f0f0f0 8px,
+    #f0f0f0 16px
+  );
+  color: #666;
+  position: relative;
+}
+
+.wire-footer {
+  margin-bottom: 40px;
+}
+
+.wire-tag {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.wire-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 20px;
+  font-family: ui-monospace, monospace;
+}
+
+.wire-box {
+  border: 2px dashed #aaa;
+  background: rgba(255, 255, 255, 0.6);
   display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-family: ui-monospace, monospace;
+  color: #777;
+}
+
+.wire-logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   justify-content: center;
   align-items: center;
 }
 
-/* Make Canvas Fill Parent */
-.hero-left canvas {
-  width: 100% !important;
-  height: 100% !important;
+.wire-logo-slot {
+  width: 120px;
+  height: 56px;
+}
+
+.wire-text-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 560px;
+}
+
+.wire-line {
+  height: 14px;
+  border: 2px dashed #aaa;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+}
+
+.wire-line-short {
+  width: 65%;
+}
+
+.wire-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.wire-footer-brand {
+  flex: 1 1 200px;
+  min-height: 72px;
+}
+
+.wire-footer-links,
+.wire-footer-social {
+  flex: 1 1 140px;
+  min-height: 72px;
 }
