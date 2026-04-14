@@ -194,7 +194,6 @@ function InteractiveEnvelope() {
    ================================== */
 function CodeSandbox() {
   const [visibleLines, setVisibleLines] = useState(1);
-  const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const codeLines = [
@@ -230,7 +229,6 @@ function CodeSandbox() {
   }, []);
 
   const startPlayback = () => {
-    setIsPlaying(true);
     setVisibleLines(1);
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
@@ -250,7 +248,6 @@ function CodeSandbox() {
   const resetPlayback = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     setVisibleLines(1);
-    setIsPlaying(false);
     setTimeout(() => startPlayback(), 500);
   };
 
