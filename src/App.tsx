@@ -1,4 +1,4 @@
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useMemo, useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, SpotLight, Loader } from "@react-three/drei";
@@ -61,6 +61,237 @@ function CloudCircuitIcon({ className, style }: { className?: string; style?: Re
       <path d="M105 100 L105 115 L125 115" stroke="#d0d0d0" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
       <circle cx="130" cy="115" r="5" fill="#d0d0d0" />
     </svg>
+  );
+}
+
+/* ==================================
+   CLIENT MARQUEE DATA with price triangles
+   ================================== */
+const MARQUEE_LINE_1 = [
+  { name: 'Apple', change: 2.4 },
+  { name: 'Google', change: -1.1 },
+  { name: 'Meta', change: 3.7 },
+  { name: 'Walmart', change: -0.5 },
+  { name: 'Amazon', change: 1.9 },
+  { name: 'Square', change: -2.3 },
+  { name: 'Uber', change: 0.8 },
+  { name: 'Visa', change: 1.2 },
+  { name: 'Airbnb', change: -0.9 },
+];
+
+const MARQUEE_LINE_2 = [
+  { name: 'Spotify', change: -1.7 },
+  { name: 'PayPal', change: 2.1 },
+  { name: 'Messenger', change: 0.4 },
+  { name: 'Samsung', change: -3.2 },
+  { name: 'NYTimes', change: 1.5 },
+  { name: 'Reuters', change: -0.6 },
+  { name: 'Coinbase', change: 4.8 },
+  { name: 'Adobe', change: 1.3 },
+  { name: 'Facebook', change: -1.0 },
+  { name: 'Starbucks', change: 0.9 },
+  { name: 'Chubb', change: -2.1 },
+  { name: 'Instagram', change: 2.6 },
+];
+
+const MARQUEE_LINE_3 = [
+  { name: 'Microsoft', change: 1.8 },
+  { name: 'Lonely Planet', change: -0.3 },
+  { name: 'Nike', change: 2.9 },
+  { name: 'Huawei', change: -4.1 },
+  { name: 'Allianz', change: 0.7 },
+  { name: 'WhatsApp', change: 1.1 },
+  { name: 'Venmo', change: -1.4 },
+  { name: 'Dropbox', change: 3.5 },
+  { name: 'ESPN', change: -0.8 },
+  { name: 'Discovery', change: 2.0 },
+  { name: 'RedBull', change: -1.6 },
+];
+
+function PriceTriangle({ change }: { change: number }) {
+  const isUp = change >= 0;
+  const color = isUp ? '#22c55e' : '#ef4444';
+  return (
+    <span className="price-triangle-wrap">
+      <svg width="14" height="12" viewBox="0 0 14 12" style={{ marginRight: '4px', transform: isUp ? 'none' : 'rotate(180deg)', transition: 'transform 0.3s ease' }}>
+        <polygon points="7,0 14,12 0,12" fill={color} />
+      </svg>
+      <span style={{ color, fontSize: '0.35em', fontFamily: "'Inter', sans-serif", fontWeight: 600, letterSpacing: '0' }}>
+        {isUp ? '+' : ''}{change.toFixed(1)}%
+      </span>
+    </span>
+  );
+}
+
+function MarqueeTrack({ items, direction }: { items: { name: string; change: number }[]; direction: 'left' | 'right' }) {
+  const content = items.map((item, i) => (
+    <span key={i} className="marquee-company-item">
+      {item.name}
+      <PriceTriangle change={item.change} />
+      <span className="marquee-dot">&nbsp;·&nbsp;</span>
+    </span>
+  ));
+  return (
+    <div className={`logo-track track-${direction}`}>
+      <span>{content}</span>
+      <span>{content}</span>
+    </div>
+  );
+}
+
+/* ==================================
+   INTERACTIVE ENVELOPE COMPONENT
+   ================================== */
+function InteractiveEnvelope() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Link to="/projects" className="interactive-envelope-card" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)} onClick={() => setIsOpen(!isOpen)}>
+      <div className="envelope-scene">
+        {/* Glow effect */}
+        <div className="envelope-glow" style={{ opacity: isOpen ? 0.4 : 0.15 }} />
+
+        {/* The Envelope SVG */}
+        <svg viewBox="0 0 240 180" className="envelope-svg" style={{ filter: `drop-shadow(0 0 ${isOpen ? '30' : '15'}px rgba(96,213,251,0.5))` }}>
+          {/* Envelope body */}
+          <rect x="20" y="50" width="200" height="120" rx="6" fill="rgba(10,20,50,0.9)" stroke="#60d5fb" strokeWidth="1.5" />
+
+          {/* Envelope flap (animated) */}
+          <g style={{ transformOrigin: '120px 50px', transition: 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)', transform: isOpen ? 'rotateX(180deg)' : 'rotateX(0deg)' }}>
+            <polygon points="20,50 120,10 220,50" fill={isOpen ? 'rgba(96,213,251,0.15)' : 'rgba(10,20,50,0.95)'} stroke="#60d5fb" strokeWidth="1.5" strokeLinejoin="round" />
+          </g>
+
+          {/* V-lines on envelope */}
+          <line x1="20" y1="50" x2="120" y2="120" stroke="#60d5fb" strokeWidth="0.6" opacity="0.4" />
+          <line x1="220" y1="50" x2="120" y2="120" stroke="#60d5fb" strokeWidth="0.6" opacity="0.4" />
+
+          {/* Letter peeking out when open */}
+          <g style={{ transition: 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s, opacity 0.4s ease 0.15s', transform: isOpen ? 'translateY(-55px)' : 'translateY(0px)', opacity: isOpen ? 1 : 0 }}>
+            <rect x="40" y="55" width="160" height="100" rx="4" fill="rgba(255,255,255,0.95)" />
+            <text x="55" y="80" fontFamily="Georgia, serif" fontSize="11" fill="#111" fontWeight="600">Heir</text>
+            <text x="55" y="100" fontFamily="Inter, sans-serif" fontSize="9" fill="#999">Coming</text>
+            <text x="55" y="114" fontFamily="Inter, sans-serif" fontSize="9" fill="#999">Soon</text>
+            <text x="55" y="128" fontFamily="Inter, sans-serif" fontSize="9" fill="#999">...</text>
+            <line x1="55" y1="140" x2="140" y2="140" stroke="#eee" strokeWidth="0.5" />
+          </g>
+        </svg>
+
+        {/* Labels */}
+        <div className="envelope-label">
+          <span className="envelope-title">Heir</span>
+          <span className="envelope-subtitle">{isOpen ? 'View Project →' : 'Hover to Open'}</span>
+        </div>
+      </div>
+
+      {/* Bottom gradient */}
+      <div className="envelope-bottom-gradient" style={{ opacity: isOpen ? 0.25 : 0.12 }} />
+    </Link>
+  );
+}
+
+/* ==================================
+   CODE SANDBOX PLAYBACK COMPONENT
+   ================================== */
+function CodeSandbox() {
+  const [visibleLines, setVisibleLines] = useState(1);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const codeLines = [
+    { indent: 0, tokens: [{ text: 'function ', color: '#e78a4e' }, { text: 'InteractiveEnvelope', color: '#333' }, { text: '() {', color: '#555' }] },
+    { indent: 1, tokens: [{ text: 'const ', color: '#e78a4e' }, { text: '[isOpen, setIsOpen]', color: '#333' }, { text: ' = ', color: '#555' }, { text: 'useState', color: '#e78a4e' }, { text: '(', color: '#555' }, { text: 'false', color: '#c75a4e' }, { text: ');', color: '#555' }] },
+    { indent: 1, tokens: [] },
+    { indent: 1, tokens: [{ text: 'return ', color: '#e78a4e' }, { text: '(', color: '#555' }] },
+    { indent: 2, tokens: [{ text: '<', color: '#888' }, { text: 'div', color: '#e78a4e' }, { text: ' className=', color: '#888' }, { text: '"envelope"', color: '#6a8759' }, { text: '>', color: '#888' }] },
+    { indent: 3, tokens: [{ text: '<', color: '#888' }, { text: 'svg', color: '#e78a4e' }, { text: ' viewBox=', color: '#888' }, { text: '"0 0 240 180"', color: '#6a8759' }, { text: '>', color: '#888' }] },
+    { indent: 4, tokens: [{ text: '<', color: '#888' }, { text: 'rect', color: '#e78a4e' }, { text: ' x=', color: '#888' }, { text: '"20"', color: '#6a8759' }, { text: ' y=', color: '#888' }, { text: '"50"', color: '#6a8759' }] },
+    { indent: 5, tokens: [{ text: 'width=', color: '#888' }, { text: '"200"', color: '#6a8759' }, { text: ' height=', color: '#888' }, { text: '"120"', color: '#6a8759' }, { text: ' />', color: '#888' }] },
+    { indent: 4, tokens: [{ text: '<', color: '#888' }, { text: 'polygon', color: '#e78a4e' }] },
+    { indent: 5, tokens: [{ text: 'points=', color: '#888' }, { text: '"20,50 120,10 220,50"', color: '#6a8759' }] },
+    { indent: 5, tokens: [{ text: 'style=', color: '#888' }, { text: '{', color: '#555' }, { text: '{', color: '#555' }] },
+    { indent: 6, tokens: [{ text: 'transform: isOpen', color: '#333' }] },
+    { indent: 7, tokens: [{ text: '? ', color: '#555' }, { text: '"rotateX(180deg)"', color: '#6a8759' }] },
+    { indent: 7, tokens: [{ text: ': ', color: '#555' }, { text: '"rotateX(0)"', color: '#6a8759' }] },
+    { indent: 5, tokens: [{ text: '}} />', color: '#555' }] },
+    { indent: 3, tokens: [{ text: '</', color: '#888' }, { text: 'svg', color: '#e78a4e' }, { text: '>', color: '#888' }] },
+    { indent: 2, tokens: [{ text: '</', color: '#888' }, { text: 'div', color: '#e78a4e' }, { text: '>', color: '#888' }] },
+    { indent: 1, tokens: [{ text: ');', color: '#555' }] },
+    { indent: 0, tokens: [{ text: '}', color: '#555' }] },
+  ];
+
+  const totalLines = codeLines.length;
+
+  useEffect(() => {
+    // Auto-start playback
+    startPlayback();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  const startPlayback = () => {
+    setIsPlaying(true);
+    setVisibleLines(1);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setVisibleLines(prev => {
+        if (prev >= totalLines) {
+          // Restart after a pause
+          setTimeout(() => {
+            setVisibleLines(1);
+          }, 2000);
+          return totalLines;
+        }
+        return prev + 1;
+      });
+    }, 350);
+  };
+
+  const resetPlayback = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setVisibleLines(1);
+    setIsPlaying(false);
+    setTimeout(() => startPlayback(), 500);
+  };
+
+  return (
+    <div className="code-sandbox-card">
+      {/* Title-bar */}
+      <div className="code-sandbox-titlebar">
+        <div className="code-sandbox-dots">
+          <div className="dot-red" />
+          <div className="dot-yellow" />
+          <div className="dot-green" />
+        </div>
+        <span className="code-sandbox-filename">InteractiveEnvelope.tsx</span>
+        <button className="code-sandbox-replay" onClick={resetPlayback} title="Replay">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
+        </button>
+      </div>
+
+      {/* Code area */}
+      <div className="code-sandbox-body">
+        {codeLines.map((line, i) => (
+          <div
+            key={i}
+            className="code-line"
+            style={{
+              paddingLeft: `${16 + line.indent * 16}px`,
+              opacity: i < visibleLines ? 1 : 0,
+              transform: i < visibleLines ? 'translateY(0)' : 'translateY(8px)',
+              transition: 'opacity 0.3s ease, transform 0.3s ease',
+            }}
+          >
+            <span className="line-number">{i + 1}</span>
+            {line.tokens.length === 0 ? <br /> : line.tokens.map((token, j) => (
+              <span key={j} style={{ color: token.color }}>{token.text}</span>
+            ))}
+            {/* Blinking cursor on the last visible line */}
+            {i === visibleLines - 1 && <span className="code-cursor">|</span>}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -163,7 +394,7 @@ function Home() {
   const [isInteractive, setIsInteractive] = useState(false);
   return (
     <>
-      {/* 1. HERO — Full viewport 3D Canvas */}
+      {/* 1. HERO — 2/3 width, left-aligned 3D Canvas */}
       <section className="hero-section">
         <div className="hero-canvas-wrap" style={{ backgroundColor: '#5a90d8' }} onMouseLeave={() => setIsInteractive(false)}>
           {!isInteractive && (
@@ -180,7 +411,7 @@ function Home() {
                 <CustomSpotLight key={index} position={data.position} targetPosition={data.target} />
               ))}
               <Instances>
-                <Model />
+                <Model isInteractive={isInteractive} />
               </Instances>
             </Suspense>
             <OrbitControls makeDefault target={[6, 1, -1]} enableZoom={isInteractive} />
@@ -189,25 +420,16 @@ function Home() {
         </div>
       </section>
 
-      {/* 2. CLIENT MARQUEE — Large serif scrolling brand names */}
+      {/* 2. CLIENT MARQUEE — with price change triangles */}
       <section className="client-logos-section">
         <div className="client-logos line-1">
-          <div className="logo-track track-right">
-            <span>Apple &nbsp;&#x25E6;&nbsp; Google &nbsp;&#x25E6;&nbsp; Meta &nbsp;&#x25E6;&nbsp; Walmart &nbsp;&#x25E6;&nbsp; Amazon &nbsp;&#x25E6;&nbsp; Square &nbsp;&#x25E6;&nbsp; Uber &nbsp;&#x25E6;&nbsp; Visa &nbsp;&#x25E6;&nbsp; Airbnb &nbsp;&#x25E6;&nbsp;</span>
-            <span>Apple &nbsp;&#x25E6;&nbsp; Google &nbsp;&#x25E6;&nbsp; Meta &nbsp;&#x25E6;&nbsp; Walmart &nbsp;&#x25E6;&nbsp; Amazon &nbsp;&#x25E6;&nbsp; Square &nbsp;&#x25E6;&nbsp; Uber &nbsp;&#x25E6;&nbsp; Visa &nbsp;&#x25E6;&nbsp; Airbnb &nbsp;&#x25E6;&nbsp;</span>
-          </div>
+          <MarqueeTrack items={MARQUEE_LINE_1} direction="right" />
         </div>
         <div className="client-logos line-2">
-          <div className="logo-track track-left">
-            <span>Spotify &nbsp;&#x25E6;&nbsp; PayPal &nbsp;&#x25E6;&nbsp; Messenger &nbsp;&#x25E6;&nbsp; Samsung &nbsp;&#x25E6;&nbsp; NYTimes &nbsp;&#x25E6;&nbsp; Reuters &nbsp;&#x25E6;&nbsp; Coinbase &nbsp;&#x25E6;&nbsp; Adobe &nbsp;&#x25E6;&nbsp; Facebook &nbsp;&#x25E6;&nbsp; Starbucks &nbsp;&#x25E6;&nbsp; Chubb &nbsp;&#x25E6;&nbsp; Instagram &nbsp;&#x25E6;&nbsp;</span>
-            <span>Spotify &nbsp;&#x25E6;&nbsp; PayPal &nbsp;&#x25E6;&nbsp; Messenger &nbsp;&#x25E6;&nbsp; Samsung &nbsp;&#x25E6;&nbsp; NYTimes &nbsp;&#x25E6;&nbsp; Reuters &nbsp;&#x25E6;&nbsp; Coinbase &nbsp;&#x25E6;&nbsp; Adobe &nbsp;&#x25E6;&nbsp; Facebook &nbsp;&#x25E6;&nbsp; Starbucks &nbsp;&#x25E6;&nbsp; Chubb &nbsp;&#x25E6;&nbsp; Instagram &nbsp;&#x25E6;&nbsp;</span>
-          </div>
+          <MarqueeTrack items={MARQUEE_LINE_2} direction="left" />
         </div>
         <div className="client-logos line-3">
-          <div className="logo-track track-right">
-            <span>Microsoft &nbsp;&#x25E6;&nbsp; Lonely Planet &nbsp;&#x25E6;&nbsp; Nike &nbsp;&#x25E6;&nbsp; Huawei &nbsp;&#x25E6;&nbsp; Allianz &nbsp;&#x25E6;&nbsp; WhatsApp &nbsp;&#x25E6;&nbsp; Venmo &nbsp;&#x25E6;&nbsp; Dropbox &nbsp;&#x25E6;&nbsp; ESPN &nbsp;&#x25E6;&nbsp; Discovery &nbsp;&#x25E6;&nbsp; RedBull &nbsp;&#x25E6;&nbsp;</span>
-            <span>Microsoft &nbsp;&#x25E6;&nbsp; Lonely Planet &nbsp;&#x25E6;&nbsp; Nike &nbsp;&#x25E6;&nbsp; Huawei &nbsp;&#x25E6;&nbsp; Allianz &nbsp;&#x25E6;&nbsp; WhatsApp &nbsp;&#x25E6;&nbsp; Venmo &nbsp;&#x25E6;&nbsp; Dropbox &nbsp;&#x25E6;&nbsp; ESPN &nbsp;&#x25E6;&nbsp; Discovery &nbsp;&#x25E6;&nbsp; RedBull &nbsp;&#x25E6;&nbsp;</span>
-          </div>
+          <MarqueeTrack items={MARQUEE_LINE_3} direction="right" />
         </div>
       </section>
 
@@ -219,83 +441,14 @@ function Home() {
         </h1>
       </section>
 
-      {/* 4. PORTFOLIO IMAGE GRID */}
+      {/* 4. PORTFOLIO — Two Items: Interactive Envelope + Code Sandbox */}
       <section className="home-grid-section">
         <div className="home-image-grid">
-          {/* Left Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-            {/* Paper Plane Card */}
-            <div style={{ background: '#fafafa', border: '1px solid #eee', borderRadius: '12px', padding: '48px 40px', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
-              <h4 style={{ fontFamily: '"Comic Sans MS", cursive', fontSize: '22px', color: '#444', marginBottom: '36px', fontWeight: 400 }}>Let's make a Plane</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', width: '100%', maxWidth: '360px' }}>
-                <svg viewBox="0 0 100 100" style={{ width: '100%', stroke: '#7ab0e0', fill: 'none', strokeWidth: '1.2' }}>
-                  <polygon points="10,90 50,10 90,90 50,70" /><line x1="50" y1="10" x2="50" y2="70" /><circle cx="50" cy="40" r="3" fill="#7ab0e0" />
-                </svg>
-                <svg viewBox="0 0 100 100" style={{ width: '100%', stroke: '#7ab0e0', fill: 'none', strokeWidth: '1.2' }}>
-                  <polygon points="10,90 50,10 90,90 50,70" /><line x1="10" y1="90" x2="90" y2="90" strokeDasharray="4" /><circle cx="50" cy="20" r="3" fill="#7ab0e0" />
-                </svg>
-                <svg viewBox="0 0 100 100" style={{ width: '100%', stroke: '#7ab0e0', fill: 'none', strokeWidth: '1.2' }}>
-                  <path d="M10,80 L50,20 L90,80 Z" /><line x1="50" y1="20" x2="40" y2="90" strokeDasharray="4" />
-                </svg>
-                <svg viewBox="0 0 100 100" style={{ width: '100%', stroke: '#7ab0e0', fill: 'none', strokeWidth: '1.2' }}>
-                  <path d="M20,60 L80,60 L90,80 L10,80 Z" />
-                </svg>
-              </div>
-            </div>
+          {/* Left — Interactive Envelope */}
+          <InteractiveEnvelope />
 
-            {/* Glowing Envelope */}
-            <div style={{ background: 'linear-gradient(145deg, #081026 0%, #0d1b3a 100%)', borderRadius: '12px', height: '340px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', width: '180px', height: '180px', background: '#3ecdfa', filter: 'blur(100px)', opacity: 0.2 }} />
-              <svg viewBox="0 0 24 24" fill="rgba(62,205,250,0.08)" stroke="#60d5fb" strokeWidth="0.8" style={{ width: '140px', height: '140px', filter: 'drop-shadow(0 0 20px rgba(96,213,251,0.5))', zIndex: 1 }}>
-                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <div style={{ position: 'absolute', bottom: 0, width: '100%', height: '40%', background: 'linear-gradient(0deg, rgba(62,205,250,0.12) 0%, transparent 100%)' }} />
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '80px' }}>
-            {/* VS Code Editor */}
-            <div style={{ background: '#1e1e1e', borderRadius: '12px', boxShadow: '0 24px 80px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-              <div style={{ background: '#2d2d2d', padding: '14px 20px', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f56' }} />
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e' }} />
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27c93f' }} />
-                <span style={{ color: '#888', fontSize: '12px', marginLeft: '16px', fontFamily: 'monospace' }}>index.js</span>
-              </div>
-              <div style={{ padding: '24px 28px', fontFamily: '"Fira Code", "Consolas", monospace', fontSize: '13px', lineHeight: '1.8', color: '#d4d4d4' }}>
-                <p><span style={{ color: '#569cd6' }}>module</span>.<span style={{ color: '#9cdcfe' }}>exports</span> = <span style={{ color: '#569cd6' }}>async function</span> (context, req) {'{'}</p>
-                <p style={{ paddingLeft: '20px' }}>context.<span style={{ color: '#dcdcaa' }}>log</span>(<span style={{ color: '#ce9178' }}>'JavaScript HTTP trigger function processed a request.'</span>);</p>
-                <br/>
-                <p style={{ paddingLeft: '20px' }}><span style={{ color: '#c586c0' }}>if</span> (req.query.name || (req.body && req.body.name)) {'{'}</p>
-                <p style={{ paddingLeft: '40px' }}>context.<span style={{ color: '#9cdcfe' }}>res</span> = {'{'}</p>
-                <p style={{ paddingLeft: '60px', color: '#6a9955' }}>// status: 200, /* Defaults to 200 */</p>
-                <p style={{ paddingLeft: '60px' }}>body: <span style={{ color: '#ce9178' }}>"Hello "</span> + (req.query.name || req.body.name)</p>
-                <p style={{ paddingLeft: '40px' }}>{'}'};</p>
-                <p style={{ paddingLeft: '20px' }}>{'}'}</p>
-                <p style={{ paddingLeft: '20px' }}><span style={{ color: '#c586c0' }}>else</span> {'{'}</p>
-                <p style={{ paddingLeft: '40px' }}>context.<span style={{ color: '#9cdcfe' }}>res</span> = {'{'}</p>
-                <p style={{ paddingLeft: '60px' }}>status: <span style={{ color: '#b5cea8' }}>400</span>,</p>
-                <p style={{ paddingLeft: '60px' }}>body: <span style={{ color: '#ce9178' }}>"Please pass a name on the query string or in the request body"</span></p>
-                <p style={{ paddingLeft: '40px' }}>{'}'};</p>
-                <p style={{ paddingLeft: '20px' }}>{'}'}</p>
-                <p>{'}'};</p>
-              </div>
-            </div>
-
-            {/* Digital Sparkle */}
-            <div style={{ background: 'linear-gradient(145deg, #020513 0%, #0a1628 100%)', borderRadius: '12px', height: '380px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(27,58,110,0.4) 0%, transparent 70%)' }} />
-              <svg viewBox="0 0 200 200" style={{ position: 'absolute', width: '100%', height: '100%' }}>
-                {Array.from({length: 50}).map((_, i) => (
-                  <circle key={i} cx={20 + (i * 37) % 180} cy={15 + (i * 53) % 180} r={i % 5 === 0 ? 2 : 1} fill={i % 3 === 0 ? "#4da8da" : "#fff"} opacity={0.2 + (i % 4) * 0.15} />
-                ))}
-              </svg>
-              <svg viewBox="0 0 24 24" fill="none" stroke="#4da8da" strokeWidth="0.4" style={{ width: '200px', height: '200px', zIndex: 1, opacity: 0.6 }}>
-                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-          </div>
+          {/* Right — Code Sandbox */}
+          <CodeSandbox />
         </div>
       </section>
 
@@ -376,16 +529,10 @@ function About() {
       {/* About page also has the marquee */}
       <section className="client-logos-section" style={{ marginTop: '100px' }}>
         <div className="client-logos line-1">
-          <div className="logo-track track-right">
-            <span>Apple &nbsp;&#x25E6;&nbsp; Google &nbsp;&#x25E6;&nbsp; Meta &nbsp;&#x25E6;&nbsp; Walmart &nbsp;&#x25E6;&nbsp; Amazon &nbsp;&#x25E6;&nbsp; Square &nbsp;&#x25E6;&nbsp; Uber &nbsp;&#x25E6;&nbsp; Visa &nbsp;&#x25E6;&nbsp; Airbnb &nbsp;&#x25E6;&nbsp;</span>
-            <span>Apple &nbsp;&#x25E6;&nbsp; Google &nbsp;&#x25E6;&nbsp; Meta &nbsp;&#x25E6;&nbsp; Walmart &nbsp;&#x25E6;&nbsp; Amazon &nbsp;&#x25E6;&nbsp; Square &nbsp;&#x25E6;&nbsp; Uber &nbsp;&#x25E6;&nbsp; Visa &nbsp;&#x25E6;&nbsp; Airbnb &nbsp;&#x25E6;&nbsp;</span>
-          </div>
+          <MarqueeTrack items={MARQUEE_LINE_1} direction="right" />
         </div>
         <div className="client-logos line-2">
-          <div className="logo-track track-left">
-            <span>Spotify &nbsp;&#x25E6;&nbsp; PayPal &nbsp;&#x25E6;&nbsp; Messenger &nbsp;&#x25E6;&nbsp; Samsung &nbsp;&#x25E6;&nbsp; Chubb &nbsp;&#x25E6;&nbsp; Instagram &nbsp;&#x25E6;&nbsp; Netflix &nbsp;&#x25E6;&nbsp;</span>
-            <span>Spotify &nbsp;&#x25E6;&nbsp; PayPal &nbsp;&#x25E6;&nbsp; Messenger &nbsp;&#x25E6;&nbsp; Samsung &nbsp;&#x25E6;&nbsp; Chubb &nbsp;&#x25E6;&nbsp; Instagram &nbsp;&#x25E6;&nbsp; Netflix &nbsp;&#x25E6;&nbsp;</span>
-          </div>
+          <MarqueeTrack items={MARQUEE_LINE_2} direction="left" />
         </div>
       </section>
     </section>
@@ -454,46 +601,96 @@ function Services() {
 }
 
 /* ==================================
-   PAGE: PROJECTS
+   PAGE: PROJECTS (Enhanced)
    ================================== */
 function Projects() {
+  const projectImages = [
+    { bg: '#2a221f', label: 'Writing Hand', radius: '50%' },
+    { bg: '#ffffff', label: 'Envelope Seal Logo', radius: '50%', border: '1px solid #eee' },
+    { bg: '#d1cdc9', label: 'Arabic Document', radius: '50%' },
+    { bg: '#b5a191', label: 'Wax Seal on Desk', radius: '50%' },
+  ];
+
   return (
     <section className="projects-section">
-      <div className="container">
-        <h2 className="projects-title">Projects</h2>
-        <h3 className="project-name">Heir</h3>
-        <div className="project-images">
-          <div className="img-placeholder" style={{ backgroundColor: '#2a221f', color: '#fff', borderRadius: '8px' }}>Writing Hand</div>
-          <div className="img-placeholder" style={{ backgroundColor: '#ffffff', border: '1px solid #eee', color: '#000', borderRadius: '8px' }}>Envelope Seal Logo</div>
-          <div className="img-placeholder" style={{ backgroundColor: '#d1cdc9', color: '#555', borderRadius: '8px' }}>Arabic Document</div>
-          <div className="img-placeholder" style={{ backgroundColor: '#b5a191', color: '#333', borderRadius: '8px' }}>Wax Seal on Desk</div>
+      <div className="container" style={{ position: 'relative' }}>
+        <CloudCircuitIcon className="watermark-huge" style={{ position: 'absolute', top: '-5%', right: '-15%', opacity: 0.04 }} />
+
+        <div className="projects-hero" style={{ position: 'relative', zIndex: 1 }}>
+          <span className="subtitle" style={{ display: 'block', marginBottom: '16px' }}>Our Work</span>
+          <h2 className="projects-title">Projects</h2>
+          <p className="projects-intro">We craft digital experiences that leave lasting impressions. Each project is a collaboration built on trust, creativity, and relentless attention to detail.</p>
+        </div>
+
+        {/* Featured Project: Heir */}
+        <div className="project-feature" style={{ position: 'relative', zIndex: 1 }}>
+          <div className="project-feature-header">
+            <h3 className="project-name">Heir</h3>
+            <span className="project-tag">Brand Identity</span>
+          </div>
+          <div className="project-images">
+            {projectImages.map((img, i) => (
+              <div
+                key={i}
+                className="img-placeholder-circle"
+                style={{
+                  backgroundColor: img.bg,
+                  color: img.bg === '#ffffff' ? '#000' : '#fff',
+                  border: img.border || 'none',
+                }}
+              >
+                <span>{img.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
         
-        <h3 className="project-name">Heir Clients</h3>
-        <div className="clients-grid">
-          <div className="client-block">
-            <h4>Google</h4>
-            <p>Dozens of projects with teams like Google Maps, Chrome, Android, Gmail, Drive, Play, Waze, YouTube, Search, Google One, and more.</p>
-          </div>
-          <div className="client-block">
-            <h4>Twitter</h4>
-            <p>We worked with Twitter to create a comprehensive new product vision for the consumer and revenue side as well as a re-brand.</p>
-          </div>
-          <div className="client-block">
-            <h4>Meta</h4>
-            <p>Multi year engagements with Messenger, Instagram, Facebook, Oculus, Meta AI, and more, as well as a Meta re-brand.</p>
-          </div>
-          <div className="client-block">
-            <h4>PayPal + Venmo</h4>
-            <p>We worked with PayPal to re-design their core apps on desktop and mobile.</p>
-          </div>
-          <div className="client-block">
-            <h4>Square</h4>
-            <p>Long term engagement including product design and development.</p>
-          </div>
-          <div className="client-block">
-            <h4>Airbnb</h4>
-            <p>We worked with Airbnb from the early days of the service and onwards.</p>
+        {/* Clients section */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <h3 className="project-name" style={{ marginTop: '80px' }}>Heir Clients</h3>
+          <div className="clients-grid">
+            <div className="client-block">
+              <div className="client-block-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+              </div>
+              <h4>Google</h4>
+              <p>Dozens of projects with teams like Google Maps, Chrome, Android, Gmail, Drive, Play, Waze, YouTube, Search, Google One, and more.</p>
+            </div>
+            <div className="client-block">
+              <div className="client-block-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 8v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+              </div>
+              <h4>Twitter</h4>
+              <p>We worked with Twitter to create a comprehensive new product vision for the consumer and revenue side as well as a re-brand.</p>
+            </div>
+            <div className="client-block">
+              <div className="client-block-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              </div>
+              <h4>Meta</h4>
+              <p>Multi year engagements with Messenger, Instagram, Facebook, Oculus, Meta AI, and more, as well as a Meta re-brand.</p>
+            </div>
+            <div className="client-block">
+              <div className="client-block-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <h4>PayPal + Venmo</h4>
+              <p>We worked with PayPal to re-design their core apps on desktop and mobile.</p>
+            </div>
+            <div className="client-block">
+              <div className="client-block-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </div>
+              <h4>Square</h4>
+              <p>Long term engagement including product design and development.</p>
+            </div>
+            <div className="client-block">
+              <div className="client-block-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <h4>Airbnb</h4>
+              <p>We worked with Airbnb from the early days of the service and onwards.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -502,21 +699,118 @@ function Projects() {
 }
 
 /* ==================================
-   PAGE: CONTACT
+   PAGE: CONTACT (Enhanced)
    ================================== */
 function Contact() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
+  };
+
   return (
     <section className="contact-section">
-      <div className="container">
-        <h2 className="section-title" style={{ fontSize: '48px', fontWeight: 700, textAlign: 'left' }}>Contact Us</h2>
-        <div className="contact-display">
-          <span className="huge-bg-text">Contact</span>
-          <span className="leave-message">+ leave a message box</span>
+      <div className="container" style={{ position: 'relative' }}>
+        <CloudCircuitIcon className="watermark-huge" style={{ position: 'absolute', top: '-10%', right: '-20%', opacity: 0.03 }} />
+
+        <div className="contact-hero" style={{ position: 'relative', zIndex: 1 }}>
+          <span className="subtitle" style={{ display: 'block', marginBottom: '16px' }}>Get In Touch</span>
+          <h2 className="section-title" style={{ fontSize: '72px', fontWeight: 800, letterSpacing: '-2px', lineHeight: 1, textAlign: 'left', marginBottom: '24px' }}>Contact Us</h2>
+          <p style={{ fontSize: '18px', color: '#666', maxWidth: '600px', lineHeight: 1.7, marginBottom: '64px' }}>
+            Have a project in mind? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
         </div>
-        <div className="contact-links">
-          <a href="#">Email.</a>
-          <a href="#">Instagram.</a>
-          <a href="#">Twitter.</a>
+
+        <div className="contact-grid" style={{ position: 'relative', zIndex: 1 }}>
+          {/* Contact Form */}
+          <div className="contact-form-wrap">
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="contact-name">Full Name</label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="contact-email">Email Address</label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  placeholder="john@company.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="contact-message">Your Message</label>
+                <textarea
+                  id="contact-message"
+                  placeholder="Tell us about your project..."
+                  rows={5}
+                  value={formData.message}
+                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                  required
+                />
+              </div>
+              <button type="submit" className="contact-submit-btn" disabled={submitted}>
+                {submitted ? '✓ Message Sent!' : 'Send Message →'}
+              </button>
+            </form>
+          </div>
+
+          {/* Contact Info */}
+          <div className="contact-info-wrap">
+            <div className="contact-info-card">
+              <div className="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <h4>Email</h4>
+              <a href="mailto:info@innovationstudio.com">info@innovationstudio.com</a>
+            </div>
+            <div className="contact-info-card">
+              <div className="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <h4>Location</h4>
+              <p>San Francisco, CA</p>
+            </div>
+            <div className="contact-info-card">
+              <div className="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h4>Hours</h4>
+              <p>Mon – Fri, 9am – 6pm PST</p>
+            </div>
+
+            <div className="contact-socials">
+              <h4>Follow Us</h4>
+              <div className="social-links">
+                <a href="#" className="social-circle" aria-label="Instagram">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+                </a>
+                <a href="#" className="social-circle" aria-label="Twitter">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 8v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+                </a>
+                <a href="#" className="social-circle" aria-label="LinkedIn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Big background text */}
+        <div className="contact-display" style={{ position: 'relative', zIndex: 1 }}>
+          <span className="huge-bg-text">Contact</span>
         </div>
       </div>
     </section>
@@ -532,6 +826,8 @@ function Navigation() {
     <nav className="nav-menu">
       <Link to="/" className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
       <Link to="/about" className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}>About Us</Link>
+      <Link to="/projects" className={`nav-item ${location.pathname === '/projects' ? 'active' : ''}`}>Projects</Link>
+      <Link to="/contact" className={`nav-item ${location.pathname === '/contact' ? 'active' : ''}`}>Contact</Link>
       <Link to="/services" className={`nav-item ${location.pathname === '/services' ? 'active' : ''}`}>Services</Link>
     </nav>
   );
@@ -572,6 +868,8 @@ function Layout() {
               <ul>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/projects">Projects</Link></li>
+                <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/services">Services</Link></li>
               </ul>
             </div>

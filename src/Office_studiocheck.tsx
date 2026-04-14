@@ -129,13 +129,22 @@ export function Instances({
   );
 }
 
-export function Model(props: JSX.IntrinsicElements["group"]) {
+export function Model({ isInteractive = false, ...props }: JSX.IntrinsicElements["group"] & { isInteractive?: boolean }) {
   const instances = useContext(context);
   const group = useRef<THREE.Group>(null);
   const { animations } = useGLTF(
     "/office_studiocheck-transformed.glb",
   ) as unknown as GLTFResult;
-  useAnimations(animations, group);
+  const { actions } = useAnimations(animations, group);
+
+  React.useEffect(() => {
+    if (isInteractive) {
+      Object.values(actions).forEach((action) => action?.play());
+    } else {
+      Object.values(actions).forEach((action) => action?.stop());
+    }
+  }, [actions, isInteractive]);
+
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
