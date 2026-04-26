@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3001)",
+      "Bash(curl -s http://localhost:3001/)",
+      "Bash(netstat -tulpn)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(sed -i 's/from-dark-blue to-dark-blue-light/from-\\\\[#081026\\\\] to-\\\\[#0d1b3a\\\\]/g' app/globals.css)",
+      "Bash(sed -i 's/bg-light-panel/bg-\\\\[#f8f9fb\\\\]/g' app/globals.css)",
+      "Bash(sed -i 's/bg-cyan-glow/bg-\\\\[#3ecdfa\\\\]/g' app/globals.css)",
+      "Bash(sed -i 's/text-marquee/text-\\\\[72px\\\\]/g' app/globals.css)",
+      "Bash(npm run *)"
+    ]
+  }
+}

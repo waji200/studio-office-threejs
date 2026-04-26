@@ -53,33 +53,33 @@ export default function Home() {
       <HeroCanvas />
 
       {/* Client Marquee */}
-      <section className="w-full overflow-hidden bg-white border-t border-black/6">
-        <div className="w-full overflow-hidden py-3">
+      <section className="client-logos-section">
+        <div className="client-logos">
           <MarqueeTrack items={MARQUEE_LINE_1} direction="right" />
         </div>
-        <div className="w-full overflow-hidden py-3">
+        <div className="client-logos">
           <MarqueeTrack items={MARQUEE_LINE_2} direction="left" />
         </div>
-        <div className="w-full overflow-hidden py-3">
+        <div className="client-logos">
           <MarqueeTrack items={MARQUEE_LINE_3} direction="right" />
         </div>
       </section>
 
       {/* Intro Tagline Section */}
-      <section className="relative w-full px-15 py-35 text-center overflow-hidden bg-white">
-        <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
-          <CloudCircuitIcon className="w-96 h-96 opacity-3.5" />
+      <section className="intro-section" id="home">
+        <div className="absolute-center">
+          <CloudCircuitIcon className="watermark-huge" />
         </div>
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <h1 className="font-georgia text-5xl leading-tight font-normal text-black mb-12">
+        <div className="relative z-10">
+          <h1 className="intro-text">
             Hi. We're Innovation Studio,<br />a strategic design and<br />innovation studio.
           </h1>
         </div>
       </section>
 
       {/* Portfolio Grid */}
-      <section className="w-full px-15 pb-35 bg-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 gap-8">
+      <section className="home-grid-section">
+        <div className="home-image-grid">
           <InteractiveEnvelope />
           <CodeSandbox />
         </div>

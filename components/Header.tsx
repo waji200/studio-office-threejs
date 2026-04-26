@@ -15,9 +15,9 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-100 flex justify-between items-center px-15 h-20 bg-white/95 backdrop-blur-md border-b border-black/6">
-      <Link href="/" className="text-2xl font-black text-black tracking-tight">
-        Studio
+    <header className="main-header">
+      <Link href="/" className="logo">
+        innovation
       </Link>
 
       <nav className="flex gap-2 items-center">
