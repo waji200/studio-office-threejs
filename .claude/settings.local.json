@@ -10,7 +10,13 @@
       "Bash(sed -i 's/bg-light-panel/bg-\\\\[#f8f9fb\\\\]/g' app/globals.css)",
       "Bash(sed -i 's/bg-cyan-glow/bg-\\\\[#3ecdfa\\\\]/g' app/globals.css)",
       "Bash(sed -i 's/text-marquee/text-\\\\[72px\\\\]/g' app/globals.css)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(awk 'NR>1 {print $2}')",
+      "Bash(xargs kill *)",
+      "mcp__Claude_in_Chrome__switch_browser"
     ]
   }
 }
