@@ -42,13 +42,9 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-<<<<<<< HEAD
     "node_modules",
     "src.backup",
     "dist",
     ".next"
-=======
-    "node_modules"
->>>>>>> 0766bfe7da339316ab88d43aba0c3fb21ea2e691
   ]
 }
