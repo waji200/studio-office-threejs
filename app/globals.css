@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes blink-cursor {
+  50% { opacity: 0; }
+}
+
 @layer base {
   html {
     @apply scroll-smooth;
@@ -124,11 +138,11 @@
   }
 
   .logo-track.track-right {
-    @apply animate-scroll-right;
+    animation: scroll-right 50s linear infinite;
   }
 
   .logo-track.track-left {
-    @apply animate-scroll-left;
+    animation: scroll-left 50s linear infinite;
   }
 
   .marquee-company-item {
@@ -226,7 +240,7 @@
 
   /* ====== CODE SANDBOX ====== */
   .code-sandbox-card {
-    @apply bg-white border-4 border-orange-code rounded-2xl flex flex-col overflow-hidden transition-all duration-300;
+    @apply bg-white border-4 border-[#e78a4e] rounded-2xl flex flex-col overflow-hidden transition-all duration-300;
     min-height: 480px;
   }
 
@@ -290,7 +304,8 @@
   }
 
   .code-cursor {
-    @apply text-[#e78a4e] font-light ml-0.5 animate-blink-cursor;
+    @apply text-[#e78a4e] font-light ml-0.5;
+    animation: blink-cursor 1s step-end infinite;
   }
 
   /* ====== FOOTER ====== */
@@ -384,7 +399,12 @@
   }
 
   .article-card {
-    @apply bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 flex flex-col hover:-translate-y-1 hover:shadow-article hover:border-gray-300;
+    @apply bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 flex flex-col;
+  }
+
+  .article-card:hover {
+    @apply -translate-y-1 border-gray-300;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
   }
 
   .article-image {
@@ -526,7 +546,12 @@
   }
 
   .client-block {
-    @apply border border-gray-200 rounded-lg p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-client hover:border-gray-300;
+    @apply border border-gray-200 rounded-lg p-8 transition-all duration-300;
+  }
+
+  .client-block:hover {
+    @apply -translate-y-1 border-gray-300;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
   }
 
   .client-block-icon {
@@ -588,7 +613,7 @@
   }
 
   .contact-submit-btn-minimal {
-    @apply w-full border-none px-4 py-4 rounded-xl text-sm font-bold cursor-pointer font-inherit transition-all duration-300 text-white;
+    @apply w-full border-none px-4 py-4 rounded-xl text-sm font-bold cursor-pointer font-[inherit] transition-all duration-300 text-white;
     background: linear-gradient(135deg, #000 0%, #222 100%);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
