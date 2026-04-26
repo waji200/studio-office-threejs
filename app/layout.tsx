@@ -1,19 +1,24 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from 'next';
+import { inter } from './fonts';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Innovation Studio',
-  description: 'Strategic Design & Digital Innovation',
-}
+  title: 'Three JS Blender',
+  description: 'Interactive 3D Studio',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={inter.variable}>
+      <body>
+        <div className="layout">
+          {children}
+        </div>
+      </body>
     </html>
-  )
+  );
 }

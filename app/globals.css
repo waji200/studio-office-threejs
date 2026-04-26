@@ -1,36 +1,72 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-* {
-  @apply box-border;
+  body {
+    @apply bg-white text-black overflow-x-hidden;
+    line-height: 1.5;
+  }
+
+  a {
+    @apply transition-opacity duration-200 ease-in-out;
+  }
+
+  a:hover {
+    @apply opacity-70;
+  }
+
+  img {
+    @apply max-w-full block;
+  }
 }
 
-html {
-  @apply scroll-smooth antialiased;
-}
+@layer components {
+  .layout {
+    @apply flex flex-col min-h-screen;
+  }
 
-body {
-  @apply bg-white text-gray-900 overflow-x-hidden;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
-}
+  .container-lg {
+    @apply max-w-7xl mx-auto px-15;
+  }
 
-#root {
-  @apply min-h-screen flex flex-col;
-}
+  .button-dark {
+    @apply inline-block bg-black text-white px-9 py-4 text-sm font-bold tracking-wide transition-all duration-200 ease-in-out hover:bg-gray-900 hover:scale-105;
+  }
 
-a {
-  @apply no-underline transition-opacity duration-200;
-  color: inherit;
-}
+  .nav-item {
+    @apply text-sm font-medium text-gray-700 px-5.5 py-2.5 border border-transparent rounded-full transition-all duration-200 ease-in-out hover:bg-gray-100 hover:text-black;
+  }
 
-a:hover {
-  @apply opacity-70;
-}
+  .nav-item.active {
+    @apply border-black text-black font-semibold;
+  }
 
-img {
-  @apply max-w-full block;
+  .marquee-company-item {
+    @apply inline-flex items-center gap-2 px-6;
+  }
+
+  .marquee-dot {
+    @apply opacity-30;
+  }
+
+  .price-triangle-wrap {
+    @apply inline-flex items-center gap-0.5;
+  }
+
+  .prose {
+    @apply text-base leading-relaxed;
+  }
+
+  .prose-lg {
+    @apply text-lg leading-relaxed;
+  }
+
+  .prose p {
+    @apply mb-6;
+  }
 }

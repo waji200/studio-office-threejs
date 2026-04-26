@@ -1,73 +1,89 @@
+import PageWrapper from '@/components/PageWrapper';
+import HeroCanvas from '@/components/HeroCanvas';
+import MarqueeTrack from '@/components/MarqueeTrack';
+import InteractiveEnvelope from '@/components/InteractiveEnvelope';
+import CodeSandbox from '@/components/CodeSandbox';
+import CloudCircuitIcon from '@/components/CloudCircuitIcon';
+
+const MARQUEE_LINE_1 = [
+  { name: 'Apple', change: 2.4 },
+  { name: 'Google', change: -1.1 },
+  { name: 'Meta', change: 3.7 },
+  { name: 'Walmart', change: -0.5 },
+  { name: 'Amazon', change: 1.9 },
+  { name: 'Square', change: -2.3 },
+  { name: 'Uber', change: 0.8 },
+  { name: 'Visa', change: 1.2 },
+  { name: 'Airbnb', change: -0.9 },
+];
+
+const MARQUEE_LINE_2 = [
+  { name: 'Spotify', change: -1.7 },
+  { name: 'PayPal', change: 2.1 },
+  { name: 'Messenger', change: 0.4 },
+  { name: 'Samsung', change: -3.2 },
+  { name: 'NYTimes', change: 1.5 },
+  { name: 'Reuters', change: -0.6 },
+  { name: 'Coinbase', change: 4.8 },
+  { name: 'Adobe', change: 1.3 },
+  { name: 'Facebook', change: -1.0 },
+  { name: 'Starbucks', change: 0.9 },
+  { name: 'Chubb', change: -2.1 },
+  { name: 'Instagram', change: 2.6 },
+];
+
+const MARQUEE_LINE_3 = [
+  { name: 'Microsoft', change: 1.8 },
+  { name: 'Lonely Planet', change: -0.3 },
+  { name: 'Nike', change: 2.9 },
+  { name: 'Huawei', change: -4.1 },
+  { name: 'Allianz', change: 0.7 },
+  { name: 'WhatsApp', change: 1.1 },
+  { name: 'Venmo', change: -1.4 },
+  { name: 'Dropbox', change: 3.5 },
+  { name: 'ESPN', change: -0.8 },
+  { name: 'Discovery', change: 2.0 },
+  { name: 'RedBull', change: -1.6 },
+];
+
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen bg-white">
-      <header className="sticky top-0 z-100 flex justify-between items-center px-16 h-20 bg-white/95 backdrop-blur-md border-b border-black/6">
-        <div className="text-2xl font-bold text-black tracking-tight">innovation</div>
-        <nav className="flex gap-2 items-center">
-          <a href="/" className="text-sm font-medium text-gray-800 px-6 py-2 rounded-full border border-transparent hover:bg-gray-100 transition-all">Home</a>
-          <a href="/about" className="text-sm font-medium text-gray-800 px-6 py-2 rounded-full border border-transparent hover:bg-gray-100 transition-all">About Us</a>
-          <a href="/projects" className="text-sm font-medium text-gray-800 px-6 py-2 rounded-full border border-transparent hover:bg-gray-100 transition-all">Projects</a>
-          <a href="/contact" className="text-sm font-medium text-gray-800 px-6 py-2 rounded-full border border-transparent hover:bg-gray-100 transition-all">Contact</a>
-          <a href="/services" className="text-sm font-medium text-gray-800 px-6 py-2 rounded-full border border-transparent hover:bg-gray-100 transition-all">Services</a>
-        </nav>
-      </header>
+    <PageWrapper>
+      {/* Hero Section with 3D Canvas */}
+      <HeroCanvas />
 
-      <div className="flex-1">
-        <section className="w-full h-screen bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-          <div className="text-center text-white">
-            <h1 className="text-6xl font-bold mb-4">Welcome to Innovation Studio</h1>
-            <p className="text-xl opacity-90">Strategic Design & Digital Innovation</p>
-          </div>
-        </section>
-      </div>
-
-      <footer className="bg-white border-t border-gray-200 py-12 px-16 relative overflow-hidden">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-4 gap-12 mb-16 relative z-10">
-            <div>
-              <div className="text-2xl font-bold mb-4">innovation</div>
-              <p className="text-sm text-gray-600 leading-relaxed max-w-xs">Strategic Design & Digital Innovation. Strategic innovation shaping future digital experiences.</p>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold mb-6 text-black">Quick Links</h4>
-              <ul className="flex flex-col gap-3">
-                <li><a href="/" className="text-sm text-gray-600 hover:text-gray-900">Home</a></li>
-                <li><a href="/about" className="text-sm text-gray-600 hover:text-gray-900">About Us</a></li>
-                <li><a href="/projects" className="text-sm text-gray-600 hover:text-gray-900">Projects</a></li>
-                <li><a href="/contact" className="text-sm text-gray-600 hover:text-gray-900">Contact</a></li>
-                <li><a href="/services" className="text-sm text-gray-600 hover:text-gray-900">Services</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold mb-6 text-black">Contact Info</h4>
-              <ul className="flex flex-col gap-3">
-                <li><a href="mailto:info@innovationstudio.com" className="text-sm text-gray-600 hover:text-gray-900">Email</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900">LinkedIn</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900">Instagram</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold mb-4 text-black">Newsletter</h4>
-              <p className="text-sm text-gray-600 mb-4">Join Our Perspective. Insights that inspire smarter digital decisions.</p>
-              <form className="flex flex-col gap-2">
-                <input type="email" placeholder="Enter your email" className="px-4 py-2 text-sm border border-gray-300 rounded-md" />
-                <button type="submit" className="px-4 py-2 bg-black text-white text-sm font-bold rounded-md hover:bg-gray-800">Subscribe</button>
-              </form>
-            </div>
-          </div>
-          <div className="border-t border-gray-300 pt-8 flex justify-between items-center relative z-10">
-            <p className="text-xs text-gray-500">&copy; 2026 Innovation Studio. All rights reserved.</p>
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="w-9 h-9 bg-blue-500 border-none rounded-sm flex items-center justify-center cursor-pointer hover:translate-y-[-2px] transition-transform">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 15l-6-6-6 6"/>
-              </svg>
-            </button>
-          </div>
+      {/* Client Marquee */}
+      <section className="w-full overflow-hidden bg-white border-t border-black/6">
+        <div className="w-full overflow-hidden py-3">
+          <MarqueeTrack items={MARQUEE_LINE_1} direction="right" />
         </div>
-      </footer>
-    </main>
-  )
+        <div className="w-full overflow-hidden py-3">
+          <MarqueeTrack items={MARQUEE_LINE_2} direction="left" />
+        </div>
+        <div className="w-full overflow-hidden py-3">
+          <MarqueeTrack items={MARQUEE_LINE_3} direction="right" />
+        </div>
+      </section>
+
+      {/* Intro Tagline Section */}
+      <section className="relative w-full px-15 py-35 text-center overflow-hidden bg-white">
+        <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
+          <CloudCircuitIcon className="w-96 h-96 opacity-3.5" />
+        </div>
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <h1 className="font-georgia text-5xl leading-tight font-normal text-black mb-12">
+            Hi. We're Innovation Studio,<br />a strategic design and<br />innovation studio.
+          </h1>
+        </div>
+      </section>
+
+      {/* Portfolio Grid */}
+      <section className="w-full px-15 pb-35 bg-white">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 gap-8">
+          <InteractiveEnvelope />
+          <CodeSandbox />
+        </div>
+      </section>
+    </PageWrapper>
+  );
 }
