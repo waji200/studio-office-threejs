@@ -128,7 +128,7 @@ function MarqueeTrack({ items, direction }: { items: { name: string; change: num
     <span key={i} className="marquee-company-item">
       {item.name}
       <PriceTriangle change={item.change} />
-      <span className="marquee-dot">&nbsp;·&nbsp;</span>
+      {/* <span className="marquee-dot">&nbsp;·&nbsp;</span> */}
     </span>
   ));
   return (
@@ -449,56 +449,7 @@ function Home() {
         </div>
       </section>
 
-      {/* 5. SERVICES SPLIT */}
-      <section className="home-services-section">
-        <div className="container">
-          <div className="services-split" style={{ position: 'relative' }}>
-            <CloudCircuitIcon className="watermark-huge" style={{ position: 'absolute', left: '-10%', top: '10%', opacity: 0.04 }} />
-
-            <div className="services-left-col" style={{ position: 'relative', zIndex: 1 }}>
-              <span className="subtitle">Our Services</span>
-              <h3>Strategic solutions<br/>for modern digital<br/>growth.</h3>
-              <Link to="/services" className="explore-link">EXPLORE ALL SERVICES &rarr;</Link>
-            </div>
-
-            <div className="services-right-col" style={{ position: 'relative', zIndex: 1 }}>
-              <div className="service-item">
-                <div className="service-icon"><Compass size={22} color="#fff" /></div>
-                <div className="service-info">
-                  <h4>Digital Strategy & Experience Architecture</h4>
-                  <p>Modern, responsive, and performance-driven websites built for growth.</p>
-                </div>
-                <div className="service-arrow"><CornerUpLeft size={18} color="#999" /></div>
-              </div>
-              <div className="service-item">
-                <div className="service-icon"><RefreshCw size={22} color="#fff" /></div>
-                <div className="service-info">
-                  <h4>Website Design & Development</h4>
-                  <p>Modern, responsive, and performance-driven websites built for growth.</p>
-                </div>
-                <div className="service-arrow"><CornerUpLeft size={18} color="#999" /></div>
-              </div>
-              <div className="service-item">
-                <div className="service-icon"><Smartphone size={22} color="#fff" /></div>
-                <div className="service-info">
-                  <h4>Interactive & 3D Integration</h4>
-                  <p>We integrate immersive digital elements that elevate user engagement.</p>
-                </div>
-                <div className="service-arrow"><CornerUpLeft size={18} color="#999" /></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. CTA BANNER */}
-      <section className="cta-banner">
-        <div className="cta-bg" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1600&q=80")' }} />
-        <div className="cta-content">
-          <h2>Ready to Build the Future of Your Digital Presence?</h2>
-          <Link to="/contact" className="button-light">Contact Us</Link>
-        </div>
-      </section>
+     
     </>
   );
 }
@@ -516,22 +467,11 @@ function About() {
           <p>My name is Alisia Laird. I'm the Founder and CEO of Innovation Studio. And yes — Innovation Studio is back. Honestly, I wasn't planning on it.</p>
           <p>I started Innovation Studio with a simple belief — that bold ideas deserve thoughtful execution. Over the years, we grew. We partnered with ambitious brands, built meaningful products, and helped turn vision into reality. The journey exceeded everything I imagined.</p>
           <p>At one point, I stepped away. Not because things weren't working — they were. Business was strong. The team was growing. The projects were exciting. But I needed a new challenge. I wanted to experience innovation from the inside of larger systems, to understand scale differently, to see ideas grow beyond the launch phase.</p>
-          <p>So I explored. I built new ventures. I experimented across industries. I learned more than I expected — about leadership, resilience, creativity, and myself. There were highs and lows. Wins and lessons. And every step shaped me. But something kept calling me back.</p>
-          <p>That feeling when someone comes with nothing but an idea — raw, undefined, full of potential — and trusts us to help shape it into something real. That moment still feels like magic. Like alchemy. I realized I missed that feeling.</p>
-          <p>So yes — Innovation Studio is back.</p>
           <p className="about-signature">— Alisia</p>
         </div>
       </div>
 
-      {/* About page also has the marquee */}
-      <section className="client-logos-section" style={{ marginTop: '100px' }}>
-        <div className="client-logos line-1">
-          <MarqueeTrack items={MARQUEE_LINE_1} direction="right" />
-        </div>
-        <div className="client-logos line-2">
-          <MarqueeTrack items={MARQUEE_LINE_2} direction="left" />
-        </div>
-      </section>
+      
     </section>
   );
 }
@@ -619,26 +559,58 @@ function Projects() {
           <p className="projects-intro">We craft digital experiences that leave lasting impressions. Each project is a collaboration built on trust, creativity, and relentless attention to detail.</p>
         </div>
 
-        {/* Featured Project: Heir */}
-        <div className="project-feature" style={{ position: 'relative', zIndex: 1 }}>
-          <div className="project-feature-header">
-            <h3 className="project-name">Heir</h3>
-            <span className="project-tag">Brand Identity</span>
-          </div>
-          <div className="project-images">
-            {projectImages.map((img, i) => (
-              <div
-                key={i}
-                className="img-placeholder-circle"
-                style={{
-                  backgroundColor: img.bg,
-                  color: img.bg === '#ffffff' ? '#000' : '#fff',
-                  border: img.border || 'none',
-                }}
-              >
-                <span>{img.label}</span>
+        {/* Featured Articles Grid */}
+        <div className="articles-grid" style={{ position: 'relative', zIndex: 1, marginTop: '60px' }}>
+          <div className="article-card">
+            <div className="article-image" style={{ backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', height: '200px', marginBottom: '20px' }} />
+            <span className="article-category" style={{ color: '#e78a4e', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Digital</span>
+            <h3 className="article-title" style={{ fontSize: '20px', fontWeight: 700, marginTop: '8px', marginBottom: '12px', lineHeight: 1.3 }}>CFOs Funded the AI Revolution. Now They're Joining It.</h3>
+            <p className="article-description" style={{ fontSize: '14px', color: '#666', marginBottom: '16px', lineHeight: 1.6 }}>CFOs championed enterprise AI investment while their own function lagged. That calculus is changing fast.</p>
+            <div className="article-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: '#999', borderTop: '1px solid #eee', paddingTop: '16px' }}>
+              <span>Brief • Apr 12, 2026</span>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999' }}>📌</button>
               </div>
-            ))}
+            </div>
+          </div>
+
+          <div className="article-card">
+            <div className="article-image" style={{ backgroundImage: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', height: '200px', marginBottom: '20px' }} />
+            <span className="article-category" style={{ color: '#667eea', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>AI Insights, and Solutions</span>
+            <h3 className="article-title" style={{ fontSize: '20px', fontWeight: 700, marginTop: '8px', marginBottom: '12px', lineHeight: 1.3 }}>AI's Next Operating Model</h3>
+            <p className="article-description" style={{ fontSize: '14px', color: '#666', marginBottom: '16px', lineHeight: 1.6 }}>From cognitive agents to long-running agents.</p>
+            <div className="article-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: '#999', borderTop: '1px solid #eee', paddingTop: '16px' }}>
+              <span>Brief • Apr 10, 2026</span>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999' }}>📌</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="article-card">
+            <div className="article-image" style={{ backgroundImage: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', height: '200px', marginBottom: '20px' }} />
+            <span className="article-category" style={{ color: '#f97316', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Leadership & Talent</span>
+            <h3 className="article-title" style={{ fontSize: '20px', fontWeight: 700, marginTop: '8px', marginBottom: '12px', lineHeight: 1.3 }}>Four Things CEOs Need to Do Differently on AI</h3>
+            <p className="article-description" style={{ fontSize: '14px', color: '#666', marginBottom: '16px', lineHeight: 1.6 }}>CEOs need to take personal responsibility for AI adoption, leading by example, building a supportive culture, and focusing on the right priorities.</p>
+            <div className="article-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: '#999', borderTop: '1px solid #eee', paddingTop: '16px' }}>
+              <span>Forbes.com • Apr 8, 2026</span>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999' }}>📌</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="article-card">
+            <div className="article-image" style={{ backgroundImage: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', height: '200px', marginBottom: '20px' }} />
+            <span className="article-category" style={{ color: '#ef4444', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Aerospace & Defense</span>
+            <h3 className="article-title" style={{ fontSize: '20px', fontWeight: 700, marginTop: '8px', marginBottom: '12px', lineHeight: 1.3 }}>Industrial Automation: From Control to Intelligence</h3>
+            <p className="article-description" style={{ fontSize: '14px', color: '#666', marginBottom: '16px', lineHeight: 1.6 }}>AI is reshaping the automation value pyramid into an hourglass.</p>
+            <div className="article-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: '#999', borderTop: '1px solid #eee', paddingTop: '16px' }}>
+              <span>Brief • Apr 7, 2026</span>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999' }}>📌</button>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -709,105 +681,46 @@ function Contact() {
   };
 
   return (
-    <section className="contact-section">
-      <div className="container" style={{ position: 'relative' }}>
-        <CloudCircuitIcon className="watermark-huge" style={{ position: 'absolute', top: '-10%', right: '-20%', opacity: 0.03 }} />
+    <section className="contact-section-minimal">
+      <div className="contact-container" style={{ position: 'relative' }}>
+        {/* Background text */}
+        <div className="contact-bg-text">Contact</div>
 
-        <div className="contact-hero" style={{ position: 'relative', zIndex: 1 }}>
-          <span className="subtitle" style={{ display: 'block', marginBottom: '16px' }}>Get In Touch</span>
-          <h2 className="section-title" style={{ fontSize: '72px', fontWeight: 800, letterSpacing: '-2px', lineHeight: 1, textAlign: 'left', marginBottom: '24px' }}>Contact Us</h2>
-          <p style={{ fontSize: '18px', color: '#666', maxWidth: '600px', lineHeight: 1.7, marginBottom: '64px' }}>
-            Have a project in mind? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-          </p>
-        </div>
+        {/* Form and links wrapper */}
+        <div className="contact-content" style={{ position: 'relative', zIndex: 1 }}>
+          <form className="contact-form-minimal" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="John Doe"
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              required
+            />
+            <input
+              type="email"
+              placeholder="john@company.com"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              required
+            />
+            <textarea
+              placeholder="Tell us about your project..."
+              rows={6}
+              value={formData.message}
+              onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+              required
+            />
+            <button type="submit" className="contact-submit-btn-minimal" disabled={submitted}>
+              {submitted ? '✓ Message Sent!' : 'Send Message →'}
+            </button>
+          </form>
 
-        <div className="contact-grid" style={{ position: 'relative', zIndex: 1 }}>
-          {/* Contact Form */}
-          <div className="contact-form-wrap">
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="contact-name">Full Name</label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  placeholder="John Doe"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="contact-email">Email Address</label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  placeholder="john@company.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="contact-message">Your Message</label>
-                <textarea
-                  id="contact-message"
-                  placeholder="Tell us about your project..."
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                  required
-                />
-              </div>
-              <button type="submit" className="contact-submit-btn" disabled={submitted}>
-                {submitted ? '✓ Message Sent!' : 'Send Message →'}
-              </button>
-            </form>
+          {/* Links section */}
+          <div className="contact-links-minimal">
+            <a href="mailto:info@innovationstudio.com">Email.</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram.</a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter.</a>
           </div>
-
-          {/* Contact Info */}
-          <div className="contact-info-wrap">
-            <div className="contact-info-card">
-              <div className="contact-info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-              </div>
-              <h4>Email</h4>
-              <a href="mailto:info@innovationstudio.com">info@innovationstudio.com</a>
-            </div>
-            <div className="contact-info-card">
-              <div className="contact-info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <h4>Location</h4>
-              <p>San Francisco, CA</p>
-            </div>
-            <div className="contact-info-card">
-              <div className="contact-info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e78a4e" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
-              <h4>Hours</h4>
-              <p>Mon – Fri, 9am – 6pm PST</p>
-            </div>
-
-            <div className="contact-socials">
-              <h4>Follow Us</h4>
-              <div className="social-links">
-                <a href="#" className="social-circle" aria-label="Instagram">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
-                </a>
-                <a href="#" className="social-circle" aria-label="Twitter">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 8v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
-                </a>
-                <a href="#" className="social-circle" aria-label="LinkedIn">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Big background text */}
-        <div className="contact-display" style={{ position: 'relative', zIndex: 1 }}>
-          <span className="huge-bg-text">Contact</span>
         </div>
       </div>
     </section>
