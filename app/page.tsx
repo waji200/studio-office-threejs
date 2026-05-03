@@ -79,9 +79,16 @@ export default function Home() {
 
       {/* Portfolio Grid */}
       <section className="home-grid-section">
-        <div className="home-image-grid">
-          <InteractiveEnvelope />
-          <CodeSandbox />
+        <div className=" mx-auto relative min-h-[500px] flex items-center">
+          {/* Code Sandbox - Moved to right */}
+          <div className="absolute right-0 w-2/4 z-10 max-w-2xl">
+            <CodeSandbox />
+          </div>
+          
+          {/* Interactive Envelope - Centered and overlapping */}
+          <div className="relative z-20 w-[45%] mx-auto max-w-4xl -translate-y-[11%]">
+            <InteractiveEnvelope />
+          </div>
         </div>
       </section>
     </PageWrapper>

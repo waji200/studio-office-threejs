@@ -64,7 +64,7 @@ export default function HeroCanvas() {
   const [isInteractive, setIsInteractive] = useState(false);
 
   return (
-    <section className="relative w-full h-screen min-h-screen overflow-hidden isolation-isolate">
+    <section className="relative w-full h-[60vh] min-h-[500px] overflow-hidden isolation-isolate">
       {/* Canvas container - 66.666% width */}
       <div
         className="absolute top-0 left-0 w-2/3 h-full z-10 bg-blue-500"
@@ -88,19 +88,13 @@ export default function HeroCanvas() {
           dpr={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1}
           gl={{ antialias: false, powerPreference: 'high-performance' }}
           orthographic
-          camera={{ position: [-20, 10, 20], zoom: 30 }}
+          camera={{ position: [-20, 20, 20], zoom: 25 }}
         >
           <ambientLight intensity={0.51} />
           <directionalLight position={[10, 18.41, 16.64]} intensity={1} castShadow={false} />
           <directionalLight position={[-10, 18.41, 16.64]} intensity={3} castShadow={false} />
           <Suspense fallback={null}>
-            {LIGHTS_DATA.map((data, index) => (
-              <CustomSpotLight
-                key={index}
-                position={data.position}
-                targetPosition={data.target}
-              />
-            ))}
+            
             <Instances>
               <Model isInteractive={isInteractive} />
             </Instances>

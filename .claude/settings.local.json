@@ -16,7 +16,11 @@
       "Bash(pkill -f \"npm run dev\")",
       "Bash(awk 'NR>1 {print $2}')",
       "Bash(xargs kill *)",
-      "mcp__Claude_in_Chrome__switch_browser"
+      "mcp__Claude_in_Chrome__switch_browser",
+      "Bash(npx next *)",
+      "Bash(dos2unix next.config.ts)",
+      "Bash(sed -i 's/\\\\r$//' next.config.ts)",
+      "Bash(pnpm install *)"
     ]
   }
 }
