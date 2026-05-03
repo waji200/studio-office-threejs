@@ -68,7 +68,7 @@ export default function CodeSandbox() {
   };
 
   return (
-    <div className="bg-white border-4 border-[#e78a4e] rounded-2xl p-8 flex flex-col gap-6 h-96">
+    <div className="bg-white border-2 border-[#e78a4e] rounded-2xl p-8 flex flex-col gap-6 h-96">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 pb-4 border-b border-gray-200">
         <span className="font-mono text-sm text-gray-600">InteractiveEnvelope.tsx</span>
@@ -82,7 +82,7 @@ export default function CodeSandbox() {
       </div>
 
       {/* Code display */}
-      <div className="font-mono text-sm flex-1 overflow-hidden">
+      <div className="font-mono text-sm flex-1 overflow-hidden opacity-70">
         {codeLines.slice(0, visibleLines).map((line, idx) => (
           <div key={idx} className="leading-6 h-6 flex">
             <span className="inline-block w-8 text-gray-400 text-right pr-4 select-none">

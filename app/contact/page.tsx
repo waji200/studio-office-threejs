@@ -19,11 +19,13 @@ export default function ContactPage() {
 
   return (
     <PageWrapper>
-      <section className="contact-section-minimal">
-        <div className="contact-container">
-          {/* Background text */}
-          <div className="contact-bg-text">Contact</div>
+      <section className="relative w-full bg-white min-h-screen flex items-center px-[60px] py-[120px] overflow-hidden">
+        {/* Background text - pure Tailwind */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-black/[0.07] whitespace-nowrap select-none pointer-events-none uppercase z-0">
+          Contact
+        </div>
 
+        <div className="contact-container">
           {/* Content */}
           <div className="contact-content">
             <form className="contact-form-minimal" onSubmit={handleSubmit}>
@@ -56,6 +58,7 @@ export default function ContactPage() {
               />
               <button
                 type="submit"
+                className="contact-submit-btn-minimal"
                 disabled={submitted}
               >
                 {submitted ? '✓ Message Sent!' : 'Send Message →'}

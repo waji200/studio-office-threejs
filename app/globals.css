@@ -124,17 +124,17 @@
   /* ====== MARQUEE ====== */
   .client-logos-section {
     @apply bg-white border-t border-black/6 overflow-hidden;
-    padding: 60px 0;
+    padding: 30px 0;
   }
 
   .client-logos {
     @apply w-full overflow-hidden;
     white-space: nowrap;
-    padding: 12px 0;
+    padding: 8px 0;
   }
 
   .logo-track {
-    @apply inline-block font-[Georgia] text-[72px] font-normal text-black tracking-wide;
+    @apply inline-block font-[Georgia] text-[56px] font-normal text-black tracking-wide;
   }
 
   .logo-track.track-right {
@@ -160,13 +160,13 @@
   /* ====== INTRO SECTION ====== */
   .intro-section {
     @apply relative w-full bg-white overflow-hidden;
-    padding: 140px 60px;
+    padding: 80px 60px;
     text-align: center;
   }
 
   .intro-text {
-    @apply font-[Georgia] text-5xl leading-tight font-normal text-black max-w-3xl mx-auto;
-    margin-bottom: 48px;
+    @apply font-[Georgia] text-4xl leading-tight font-normal text-black max-w-2xl mx-auto;
+    margin-bottom: 32px;
   }
 
   .button-dark {
@@ -571,22 +571,9 @@
   }
 
   /* ====== CONTACT PAGE ====== */
-  .contact-section-minimal {
-    @apply relative w-full bg-white min-h-screen flex items-center;
-    padding: 120px 60px;
-  }
-
   .contact-container {
     @apply max-w-2xl mx-auto w-full flex items-center justify-center relative;
     min-height: 600px;
-  }
-
-  .contact-bg-text {
-    @apply absolute text-9xl font-black text-gray-300/15 whitespace-nowrap select-none pointer-events-none;
-    letter-spacing: -8px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
   }
 
   .contact-content {
@@ -594,13 +581,13 @@
   }
 
   .contact-form-minimal {
-    @apply flex flex-col gap-5 w-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-black/6 shadow-sm mb-12;
-    padding: 48px;
+    @apply flex flex-col gap-5 w-full mb-12;
+    padding: 0;
   }
 
   .contact-form-minimal input,
   .contact-form-minimal textarea {
-    @apply px-4.5 py-4 border border-black/8 rounded-xl bg-white text-sm text-black outline-none transition-all duration-300 shadow-sm hover:border-black/12 focus:border-black/20 focus:shadow-md focus:-translate-y-0.5;
+    @apply px-4.5 py-4 border-b border-black/10 rounded-none bg-transparent text-sm text-black outline-none transition-all duration-300 hover:border-black/30 focus:border-black;
   }
 
   .contact-form-minimal input::placeholder,

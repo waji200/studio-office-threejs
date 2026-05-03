@@ -28,20 +28,7 @@ export default function ServicesPage() {
 
           {/* Services Grid */}
           <div className="grid grid-cols-3 gap-12 mb-20">
-            <div className="relative">
-              <div className="absolute -top-16 -left-16 opacity-5 pointer-events-none">
-                <CloudCircuitIcon className="w-64 h-64" />
-              </div>
-              <span className="text-xs uppercase tracking-widest font-semibold text-gray-600">Our Services</span>
-              <h3 className="text-3xl font-bold text-black mt-4 mb-8 leading-tight">
-                Strategic solutions<br />for modern digital<br />growth.
-              </h3>
-              <a href="#" className="text-sm font-bold text-black hover:text-gray-600 transition-colors">
-                EXPLORE ALL SERVICES →
-              </a>
-            </div>
-
-            <div className="space-y-6">
+            <div className="space-y-6 col-span-2">
               <div className="border-b border-gray-200 pb-6">
                 <div className="flex items-start gap-4">
                   <div className="bg-black p-2 rounded text-white flex-shrink-0">
@@ -92,13 +79,18 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <div />
-          </div>
-
-          {/* Dashboard Mockups */}
-          <div className="grid grid-cols-2 gap-8">
-            <DashboardMockupGoals />
-            <DashboardMockupRange />
+            <div className="relative">
+              <div className="absolute -top-16 -left-16 opacity-5 pointer-events-none">
+                <CloudCircuitIcon className="w-64 h-64" />
+              </div>
+              <span className="text-xs uppercase tracking-widest font-semibold text-gray-600">Our Services</span>
+              <h3 className="text-3xl font-bold text-black mt-4 mb-8 leading-tight">
+                Strategic solutions<br />for modern digital<br />growth.
+              </h3>
+              <a href="#" className="text-sm font-bold text-black hover:text-gray-600 transition-colors">
+                EXPLORE ALL SERVICES →
+              </a>
+            </div>
           </div>
         </div>
       </section>
